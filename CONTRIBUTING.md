@@ -109,17 +109,19 @@ because Claude writes a large share of this code and **the PR is the surface whe
 human actually reads the diff.** A change nobody read is not reviewed by virtue of being
 small.
 
-- **The PR title is a Conventional Commit subject.** Squash-merge uses it verbatim as the
-  commit on `main`, so a sloppy title becomes permanent history.
+- **The PR title is a Conventional Commit subject**, and CI fails the pull request if it
+  is not. Squash-merge uses the title as the commit subject on `main`, so a sloppy title
+  becomes permanent history. GitHub appends ` (#<pr>)` to it on merge; that is the only
+  difference between the title and the commit.
 - Open it early. Draft is fine and preferred over a branch nobody can see.
 - The body says what changed and why, and carries `Closes #<issue>`.
 - Read the full diff before merging. Every line, including the ones you are sure about.
-- The template''s checkboxes are a prompt, not a gate — GitHub blocks nothing on them and
+- The template's checkboxes are a prompt, not a gate — GitHub blocks nothing on them and
   they stay editable after merge. Anything that can be enforced belongs in CI instead, so
   keep the list to the judgement calls nothing else can check.
-- CI must be green, once CI exists.
-- **A code owner must approve.** `.github/CODEOWNERS` owns every path, so review is
-  requested automatically and required on every pull request, whoever opened it.
+- CI must be green.
+- **Review is requested automatically** — `.github/CODEOWNERS` owns every path — though an
+  approval is not currently required to merge. See the note under branch protection.
 
 ## Merging
 
@@ -140,17 +142,32 @@ Semantic versioning, tagged on the `main` commit that gets deployed.
 ## Branch protection on `main`
 
 - Require a pull request before merging.
-- Require review from Code Owners.
+- Require the `Conventional Commit subject` status check.
+- Require branches to be up to date before merging.
 - Require linear history.
+- Require conversation resolution before merging.
 - Block force-pushes and branch deletion.
-- Require status checks once CI runs on pull requests.
 
-⚠️ **GitHub does not let the author of a pull request approve it.** While the repository
-has a single owner, their own pull requests therefore cannot satisfy the code-owner rule
-and are merged under an admin bypass — with the full diff read first, which is the gate
-that actually matters. Everyone else''s pull requests need a real approval, and the
-bypass goes away the moment there is a second owner to ask.
+⚠️ **An approval is deliberately not required while there is one contributor.** GitHub
+does not let the author of a pull request approve it, so a required approval with a sole
+owner blocks every pull request and can only be cleared by an admin override — which is
+worse than having no rule, because the override bypasses every other rule at the same
+time. A required approval exists to stop *other people with write access* merging
+unreviewed work. With nobody else, it stops nothing and blocks everything.
 
-> A branching model cannot be more advanced than the safety net under it. Until CI runs on
-> pull requests, everything above is convention rather than enforcement — which makes
-> standing up CI the highest-leverage item on the board, however unglamorous it looks.
+⭐ **Turn it on the day a second person gets write access:** set required approvals to 1
+and enable review from Code Owners. Until then the gates that actually hold are the pull
+request itself, CI, and reading the diff.
+
+## Continuous integration
+
+Workflows live in `.github/workflows/` and run on every pull request.
+
+| Workflow | Checks |
+| --- | --- |
+| `pr-title.yml` | The pull request title is a Conventional Commit subject |
+
+> A branching model cannot be more advanced than the safety net under it. Most of this
+> file is still convention rather than enforcement, and it stays that way until there is
+> application code with a typecheck, a linter and tests behind it. Every check added here
+> converts a paragraph above into a rule a machine keeps.
