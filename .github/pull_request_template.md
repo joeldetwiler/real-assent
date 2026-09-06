@@ -10,5 +10,4 @@ Closes #
 
 ## Checklist
 
-- [ ] Title is a Conventional Commit subject — it becomes the commit on `main` verbatim
 - [ ] Full diff read, not skimmed

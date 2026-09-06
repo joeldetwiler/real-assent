@@ -1,0 +1,45 @@
+name: PR title
+
+# The PR title becomes the commit subject on main, because merges are squashes.
+# This is the only place that rule can be enforced, so it is enforced here.
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  conventional-commit:
+    name: Conventional Commit subject
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the title
+        shell: bash
+        env:
+          # Read through the environment rather than interpolating into the script:
+          # a title is attacker-controlled text on a public repo.
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -uo pipefail
+
+          types='feat|fix|refactor|test|docs|content|chore|ci|build|perf'
+          pattern="^($types)(\([a-z0-9._-]+\))?!?: [a-z].*$"
+
+          fail() {
+            printf '::error::%s\n' "$1"
+            printf '\nTitle:    %s\n' "$TITLE"
+            printf '\nExpected: <type>(<scope>): <subject>\n'
+            printf 'Types:    %s\n' "${types//|/, }"
+            printf 'Subject:  imperative, lowercase, no trailing period\n'
+            printf 'Length:   72 characters or fewer\n'
+            printf '\nSee CONTRIBUTING.md.\n'
+            exit 1
+          }
+
+          [[ "$TITLE" =~ $pattern ]] || fail 'Title is not a Conventional Commit subject.'
+          [[ "$TITLE" != *. ]]       || fail 'Title must not end in a period.'
+          (( ${#TITLE} <= 72 ))      || fail "Title is ${#TITLE} characters; the limit is 72."
+
+          printf 'Title is a well-formed Conventional Commit subject.\n'
