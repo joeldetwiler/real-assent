@@ -10,7 +10,5 @@ Closes #
 
 ## Checklist
 
-- [ ] Title is a Conventional Commit subject — it becomes the commit on `main`
+- [ ] Title is a Conventional Commit subject — it becomes the commit on `main` verbatim
 - [ ] Full diff read, not skimmed
-- [ ] Issue linked with `Closes #`
-- [ ] CI green (once CI exists)

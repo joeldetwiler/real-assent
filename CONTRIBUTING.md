@@ -114,6 +114,9 @@ small.
 - Open it early. Draft is fine and preferred over a branch nobody can see.
 - The body says what changed and why, and carries `Closes #<issue>`.
 - Read the full diff before merging. Every line, including the ones you are sure about.
+- The template''s checkboxes are a prompt, not a gate — GitHub blocks nothing on them and
+  they stay editable after merge. Anything that can be enforced belongs in CI instead, so
+  keep the list to the judgement calls nothing else can check.
 - CI must be green, once CI exists.
 - **A code owner must approve.** `.github/CODEOWNERS` owns every path, so review is
   requested automatically and required on every pull request, whoever opened it.
