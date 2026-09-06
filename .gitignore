@@ -11,6 +11,9 @@ coverage/
 .vite/
 .eslintcache
 
+# Local-only Claude Code notes
+CLAUDE.local.md
+
 # Environment
 .env
 .env.*
