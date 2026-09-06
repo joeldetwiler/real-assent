@@ -115,6 +115,8 @@ small.
 - The body says what changed and why, and carries `Closes #<issue>`.
 - Read the full diff before merging. Every line, including the ones you are sure about.
 - CI must be green, once CI exists.
+- **A code owner must approve.** `.github/CODEOWNERS` owns every path, so review is
+  requested automatically and required on every pull request, whoever opened it.
 
 ## Merging
 
@@ -135,12 +137,16 @@ Semantic versioning, tagged on the `main` commit that gets deployed.
 ## Branch protection on `main`
 
 - Require a pull request before merging.
+- Require review from Code Owners.
 - Require linear history.
 - Block force-pushes and branch deletion.
 - Require status checks once CI runs on pull requests.
 
-Self-merge is allowed and expected. The gate is CI plus reading the diff, not a second
-pair of eyes that does not exist.
+⚠️ **GitHub does not let the author of a pull request approve it.** While the repository
+has a single owner, their own pull requests therefore cannot satisfy the code-owner rule
+and are merged under an admin bypass — with the full diff read first, which is the gate
+that actually matters. Everyone else''s pull requests need a real approval, and the
+bypass goes away the moment there is a second owner to ask.
 
 > A branching model cannot be more advanced than the safety net under it. Until CI runs on
 > pull requests, everything above is convention rather than enforcement — which makes
