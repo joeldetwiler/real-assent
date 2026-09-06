@@ -120,8 +120,8 @@ small.
   they stay editable after merge. Anything that can be enforced belongs in CI instead, so
   keep the list to the judgement calls nothing else can check.
 - CI must be green.
-- **A code owner must approve.** `.github/CODEOWNERS` owns every path, so review is
-  requested automatically and required on every pull request, whoever opened it.
+- **Review is requested automatically** — `.github/CODEOWNERS` owns every path — though an
+  approval is not currently required to merge. See the note under branch protection.
 
 ## Merging
 
@@ -142,16 +142,22 @@ Semantic versioning, tagged on the `main` commit that gets deployed.
 ## Branch protection on `main`
 
 - Require a pull request before merging.
-- Require review from Code Owners.
-- Require linear history.
-- Block force-pushes and branch deletion.
 - Require the `Conventional Commit subject` status check.
+- Require branches to be up to date before merging.
+- Require linear history.
+- Require conversation resolution before merging.
+- Block force-pushes and branch deletion.
 
-⚠️ **GitHub does not let the author of a pull request approve it.** While the repository
-has a single owner, their own pull requests therefore cannot satisfy the code-owner rule
-and are merged under an admin bypass — with the full diff read first, which is the gate
-that actually matters. Everyone else's pull requests need a real approval, and the
-bypass goes away the moment there is a second owner to ask.
+⚠️ **An approval is deliberately not required while there is one contributor.** GitHub
+does not let the author of a pull request approve it, so a required approval with a sole
+owner blocks every pull request and can only be cleared by an admin override — which is
+worse than having no rule, because the override bypasses every other rule at the same
+time. A required approval exists to stop *other people with write access* merging
+unreviewed work. With nobody else, it stops nothing and blocks everything.
+
+⭐ **Turn it on the day a second person gets write access:** set required approvals to 1
+and enable review from Code Owners. Until then the gates that actually hold are the pull
+request itself, CI, and reading the diff.
 
 ## Continuous integration
 
