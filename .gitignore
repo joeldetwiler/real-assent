@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Test and tooling output
+coverage/
+.vite/
+.eslintcache
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Editor
+.vs/
+.idea/
+*.swp
+
+# VS Code — the repo owns shared settings, not personal ones
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# .NET, for when the backend lands
+bin/
+obj/
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
