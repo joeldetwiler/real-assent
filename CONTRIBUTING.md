@@ -64,6 +64,9 @@ reconstruct later from the diff alone.
 - The issue number is the id everything else cites — branch name, PR body, commit footer.
 - **Close issues through the pull request** (`Closes #12` in the PR body), never by hand.
   That is what links the issue to the commit that actually resolved it.
+- **One type label per issue**, drawn from the Conventional Commit types below. The label,
+  the branch prefix and the commit type are deliberately the same vocabulary rather than
+  three that nearly agree. `blocked` is the only label orthogonal to type.
 
 Trivial work — a typo, a dependency bump — needs no issue. If it needs explaining, it
 needs an issue.
